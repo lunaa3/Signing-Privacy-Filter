@@ -14,12 +14,11 @@ class VideoFilter():
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = cap.get(cv2.CAP_PROP_FPS)
 
-        print(width)
-        print(height)
-        print(fps)
+        print(f'Resolution: {width}x{height}')
+        print(f'Fps: {fps}')
 
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter('output_videos/' + splitext(basename(file_name))[0] + '_filtered.mp4', fourcc, fps, (width, height))
+        out = cv2.VideoWriter(splitext(basename(file_name))[0] + '_filtered.mp4', fourcc, fps, (width, height))
 
         with mp_holistic.Holistic(
             static_image_mode=False,
@@ -50,6 +49,9 @@ class VideoFilter():
 
                    # Write the filtered frame
                     out.write(masked_image)
+
+                    # Show filtered video
+                    cv2.imshow('OpenCV Feed', masked_image)
 
                 # Break gracefully
                 if cv2.waitKey(1) & 0xFF == ord('q'):
